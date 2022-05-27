@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pv-deployment
+spec:
+  selector:
+    matchLabels:
+      app: pv-deployment
+  template:
+    metadata:
+      labels:
+        app: pv-deployment
+    spec:
+      volumes:
+        - name: myd-pvc
+          persistentVolumeClaim:
+            claimName: mypvc #here we need to mention the name of our pvc
+      containers:
+      - name: nginx
+        image: nginx:latest
+        volumeMounts:
+          - mountPath: /var/www/html
+            name: myd-pvc
+        ports:
+        - containerPort: 80
